@@ -1,0 +1,43 @@
+package com.example.pictgram.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.example.pictgram.entity.User;
+import com.example.pictgram.repository.UserRepository;
+
+/**
+ * 認証処理で必要となる資格情報とユーザーの状態をデータストアから取得するためのインタフェースを実装している
+ * @author user
+ *
+ */
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Autowired
+    private UserRepository repository;
+
+    protected static Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+   
+    /**
+     * ユーザー名に基づいてユーザーを見つける
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+    	log.debug("username={}", username);
+    	
+        if (username == null || "".equals(username)) {
+            throw new UsernameNotFoundException("Username is empty");
+        }
+        User entity = repository.findByUsername(username);
+
+        return entity;
+    }
+
+}
