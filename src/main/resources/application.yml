@@ -1,9 +1,13 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:pictgram
-    username: sa
-    password: 
+    #driver-class-name: org.h2.Driver
+    #url: jdbc:h2:mem:pictgram
+    #username: sa
+    #password:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/pictgram
+    username: pictgram
+    password: password
   mvc:
     hiddenmethod:
       filter:
@@ -12,9 +16,5 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
-  h2:
-    console:
-      enabled: true
-      
 image:
   local: true 
