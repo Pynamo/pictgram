@@ -137,11 +137,19 @@ nav.navbar {
       border: none;
     }
     .comments {
-      ul{
+      ul {
         li {
           list-style: none;
         }
       }
     }
   }
+}
+
+.fc-direction-ltr {
+  padding-top: 70px;
+}
+#calendar a {
+  color: #337ab7;
+  text-decoration: none;
 }
