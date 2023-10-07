@@ -25,4 +25,5 @@ public class PictgramApplication extends SpringBootServletInitializer {
 		return application.sources(PictgramApplication.class);
 	}
 
+
 }

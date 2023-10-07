@@ -1,48 +1,42 @@
 package com.example.pictgram.controller;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import com.example.pictgram.bean.TopicCsv;
+import com.example.pictgram.entity.Favorite;
+import com.example.pictgram.entity.Topic;
+import com.example.pictgram.entity.UserInf;
+import com.example.pictgram.form.FavoriteForm;
+import com.example.pictgram.form.TopicForm;
+import com.example.pictgram.form.UserForm;
+import com.example.pictgram.repository.TopicRepository;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FilenameUtils;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.*;
+import java.lang.reflect.Type;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
-//import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FilenameUtils;
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.example.pictgram.entity.Topic;
-import com.example.pictgram.entity.UserInf;
-import com.example.pictgram.form.TopicForm;
-import com.example.pictgram.form.UserForm;
-import com.example.pictgram.repository.TopicRepository;
-import com.example.pictgram.entity.Favorite;
-import com.example.pictgram.form.FavoriteForm;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class TopicsController {
@@ -239,6 +233,20 @@ public class TopicsController {
         image.transferTo(destFile); // 受信したファイルを指定された宛先ファイルに転送する
 
         return destFile;
+    }
+
+    @RequestMapping(value = "/topics/topic.csv", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+            + "; charset=UTF-8; Content-Disposition: attachment")
+    @ResponseBody
+    public Object downloadCsv() throws IOException {
+        Iterable<Topic> topics = repository.findAll();
+        Type listType = new TypeToken<List<TopicCsv>>() {
+        }.getType();
+        List<TopicCsv> csv = modelMapper.map(topics, listType);
+        CsvMapper mapper = new CsvMapper();
+        CsvSchema schema = mapper.schemaFor(TopicCsv.class).withHeader();
+
+        return mapper.writer(schema).writeValueAsString(csv);
     }
 
 }
