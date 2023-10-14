@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>pictgram</artifactId>
-	<packaging>war</packaging>
+	<!--<packaging>war</packaging>-->
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pictgram</name>
 	<description>Pictgram</description>

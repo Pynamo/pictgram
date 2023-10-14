@@ -37,8 +37,8 @@ public class SecurityConfig {
     FormAuthenticationProvider authenticationProvider;
 
 
-    private static final String[] URLS = { "/css/**", "/images/**", "/scripts/**", "/h2-console/**", "/favicon.ico" };
-
+    //private static final String[] URLS = { "/css/**", "/images/**", "/scripts/**", "/h2-console/**", "/favicon.ico" };
+    private static final String[] URLS = { "/css/**", "/images/**", "/scripts/**", "/h2-console/**", "/favicon.ico", "/OneSignalSDKWorker.js" };
 
 	
     /**

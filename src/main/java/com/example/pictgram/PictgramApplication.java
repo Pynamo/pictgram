@@ -20,10 +20,11 @@ public class PictgramApplication extends SpringBootServletInitializer {
 	 * warファイルを作成してTomcatなどのServletコンテナにデプロイする場合に使用し、
 	 * SpringApplicationBuilderオブジェクトに、アプリケーションクラスの情報を追加します
 	 */
+	/**
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(PictgramApplication.class);
-	}
+	}*/
 
 
 }

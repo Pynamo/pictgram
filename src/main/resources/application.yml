@@ -21,3 +21,6 @@ image:
 
 server:
   port: 8082
+
+onesignal:
+  id: ${onesignal.id}
