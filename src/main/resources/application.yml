@@ -40,3 +40,6 @@ server:
 
 onesignal:
   id: ${onesignal.id}
+
+googlemap:
+  key: ${googlemap.key}
