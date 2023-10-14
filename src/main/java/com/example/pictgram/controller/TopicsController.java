@@ -8,6 +8,7 @@ import com.example.pictgram.form.FavoriteForm;
 import com.example.pictgram.form.TopicForm;
 import com.example.pictgram.form.UserForm;
 import com.example.pictgram.repository.TopicRepository;
+import com.example.pictgram.service.SendMailService;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +38,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
+import org.thymeleaf.context.Context;
+
 
 @Controller
 public class TopicsController {
@@ -57,6 +60,9 @@ public class TopicsController {
 
     @Value("${image.local:false}")
     private String imageLocal;
+
+    @Autowired
+    private SendMailService sendMailService;
 
     /**
      * 話題一覧を表示する
@@ -205,6 +211,12 @@ public class TopicsController {
         redirAttrs.addFlashAttribute("hasMessage", true);
         redirAttrs.addFlashAttribute("class", "alert-info");
         redirAttrs.addFlashAttribute("message", messageSource.getMessage("topics.create.flash.2", new String[] {}, locale));
+
+        Context context = new Context();
+        context.setVariable("title", "【Pictgram】新規投稿");
+        context.setVariable("name", user.getUsername());
+        context.setVariable("description", entity.getDescription());
+        sendMailService.sendMail(context);
 
         return "redirect:/topics";
     }
